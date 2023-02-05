@@ -8,7 +8,7 @@ ProductTag.init(
   {
     // define columns
     id: {
-      tpye: DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
@@ -17,7 +17,7 @@ ProductTag.init(
     product_id: {
       type: DataTypes.INTEGER,
       references: {
-        mdoel: 'product',
+        mdoel: 'Product',
         key: 'id',
       },
     },
@@ -25,7 +25,7 @@ ProductTag.init(
     tag_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'tag',
+        model: 'Tag',
         key: 'id',
       },
     },
