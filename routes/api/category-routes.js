@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
     const categoryData = await Category.create(req.body);
     res.status(201).json({categoryData});
   } catch(err) {
-    res.status(500).json({message: 'An error occured. Cannot complete post.'})
+    res.status(500).json({ message: 'An error occured. Cannot complete post.' })
   }
   
   
@@ -52,10 +52,44 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
+  await Category.update(
+    {
+      category_name: req.body.category_name,
+    },
+
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
+    .then((categoryData) => {
+      res.json(categoryData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
 });
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+  try {
+    const categoryData = await Category.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!categoryData) {
+      res.status(404).json({ message: 'No category found with that ID!' });
+      return;
+    }
+
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
