@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Category, Product, ProductTag, Tag } = require('../../models');
+const { Category, Product} = require('../../models');
 
 // The `/api/categories` endpoint
 
@@ -8,11 +8,12 @@ const { Category, Product, ProductTag, Tag } = require('../../models');
 router.get('/', async (req, res) => {
   try {
     const categoryData = await Category.findAll({
-      include: [{model: Product}, {model: ProductTag}, {model: Tag}],
+      include: [{model: Product}],
     });
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 });
 
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const categoryData = await Category.findByPk(req.params.id, {
-      include: [{ model: Product}, {model: ProductTag}, {model: Tag}],
+      include: [{ model: Product}],
     });
 
     if (!categoryData) {
@@ -32,11 +33,21 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
+  
 });
 
 router.post('/', async (req, res) => {
   // create a new category
+  try {
+    const categoryData = await Category.create(req.body);
+    res.status(201).json({categoryData});
+  } catch(err) {
+    res.status(500).json({message: 'An error occured. Cannot complete post.'})
+  }
+  
+  
 });
 
 router.put('/:id', async (req, res) => {
